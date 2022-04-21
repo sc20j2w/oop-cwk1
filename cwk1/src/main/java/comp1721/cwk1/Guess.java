@@ -2,12 +2,14 @@ package comp1721.cwk1;
 
 import java.util.Scanner;
 
+import static java.lang.System.exit;
+
 
 public class Guess {
   // Use this to get player input in readFromPlayer()
   private static final Scanner INPUT = new Scanner(System.in);
   private int guessNumber;
-  private String chose_Word = null;
+  private String choseWord = null;
   private boolean visual;
   // TODO: Implement constructor with int parameter
   public Guess(int i) {
@@ -31,7 +33,7 @@ public class Guess {
       throw new GameException("Wrong guess number.");
     }
     guessNumber = number;
-    chose_Word = a.toUpperCase();
+    choseWord = a.toUpperCase();
   }
   // TODO: Implement getGuessNumber(), returning an int
   public int getGuessNumber()
@@ -40,23 +42,31 @@ public class Guess {
   }
   // TODO: Implement getChosenWord(), returning a String
   public String getChosenWord() {
-    return chose_Word;
+    return choseWord;
   }
   // TODO: Implement readFromPlayer()
   public void readFromPlayer() {
-    chose_Word = INPUT.next();
-    if (chose_Word.length() != 5) {
-      throw new GameException("Wrong length.");
+    int i;
+    choseWord = INPUT.next();
+    if (choseWord.length() != 5) {
+      System.out.printf("Wrong length.");
+      exit(0);
     }
-    chose_Word = chose_Word.toUpperCase();
+    for(i = 0; i < choseWord.length(); i++){
+      if (choseWord.charAt(i) >= '0' && choseWord.charAt(i) <= '9'){
+        System.out.printf("Wrong enter.");
+        exit(0);
+      }
+    }
+    choseWord = choseWord.toUpperCase();
   }
   // TODO: Implement compareWith(), giving it a String parameter and String return type
   public String compareWith(String input){
     int i;
     int j;
     char x = 'y';
-    chose_Word = chose_Word.toUpperCase();
-    char[] word = chose_Word.toCharArray();
+    choseWord = choseWord.toUpperCase();
+    char[] word = choseWord.toCharArray();
     char[] answer = input.toCharArray();
     char[] judgement = {'b', 'b', 'b', 'b', 'b'};
     String output = "";
@@ -94,7 +104,7 @@ public class Guess {
         output += "\033[30;107m " + word[i]+ " \033[0m";
       }
     }
-      if(Wordle.begin == 1){
+      if(Wordle.getSpecial() == 1){
       if(judgement[0] == 'g') {
         green += "1st ";
       }else if(judgement[0] == 'y'){
@@ -133,7 +143,7 @@ public class Guess {
     return output;
   }
   // TODO: Implement matches(), giving it a String parameter and boolean return type
-  public boolean matches(String answer) {return chose_Word.equals(answer);}
+  public boolean matches(String answer) {return choseWord.equals(answer);}
   // TODO: Additional features: Color blindness mode
-  public void Color_blind (boolean color) { visual = color; }
+  public void colorblind (boolean color) { visual = color; }
 }
